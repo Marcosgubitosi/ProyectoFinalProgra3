@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { auth, db } from "../firebase/config";
+import { auth, db } from "../firebase/Config";
 
 class Register extends Component {
   constructor(props) {
