@@ -47,6 +47,14 @@ class Profile extends Component {
            })
         })})
   }
+  logout() {
+    auth
+      .signOut()
+      .then(() => {
+        this.props.navigation.navigate("Login");
+      })
+      .catch((error) => console.log(error));
+  }
 
 
 
@@ -71,10 +79,28 @@ class Profile extends Component {
           renderItem={({ item }) => 
           item.data.email === auth.currentUser.email ? <Text>Posteo: {item.data.message}</Text>  : null }
         />
-        
+        <TouchableOpacity
+          style={styles.logoutButton}
+          onPress={() => this.logout()}
+        >
+          <Text style={styles.logoutText}>Logout</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  logoutButton: {
+    backgroundColor: "#ff4444",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  logoutText: {
+    color: "white",
+    textAlign: "center",
+  },
+});
 
 export default Profile;
