@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
+import Posts from "../components/Posts";
 
 class Home extends Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class Home extends Component {
   render() {
     return (
       <View>
-
+        <Posts/>
       </View>
     );
   }
