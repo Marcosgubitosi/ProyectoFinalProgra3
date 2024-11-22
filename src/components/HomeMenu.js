@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Home from '../screens/Home';
 import Profile from '../screens/Profile';
 import NewPost from '../screens/NewPost';
+import Search from '../screens/Search';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -24,6 +25,11 @@ function HomeMenu() {
             name="NewPost" 
             component={NewPost}
             options={{headerShown: false, tabBarIcon: () => <AntDesign name='plussquareo' size = {24} color="black" />}}
+          />
+          <Tab.Screen 
+            name="Search" 
+            component={Search}
+            options={{headerShown: false, tabBarIcon: () => <AntDesign name='search1' size = {24} color="black" />}}
           />
           <Tab.Screen  
             name="Profile" 

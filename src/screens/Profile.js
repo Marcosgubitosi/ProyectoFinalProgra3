@@ -64,7 +64,7 @@ class Profile extends Component {
   handleDelete(id, data) {
     db.collection('posts').doc(id).delete()
       .then(() => {
-        console.log('Documento eliminado correctamente');
+        // console.log('Documento eliminado correctamente');
       })
       .catch((error) => {
         console.error('Error al eliminar el documento:', error);
