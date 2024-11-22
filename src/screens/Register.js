@@ -54,12 +54,13 @@ class Register extends Component {
           onChangeText={(text) => this.setState({ password: text })}
           value={this.state.password}
         />
+        {this.state.email !== "" && this.state.password !== "" && this.state.userName !== "" ? (
         <TouchableOpacity
           onPress={() => this.handleSubmit()}
           style={[styles.button, styles.buttonSecondary]}
         >
         <Text>Acceder</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>): <Text> Ingrese todos sus datos para poder registrarse </Text>}
         {/* <Text>Navegación cruzada a Login: </Text> */}
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate("Login")}
