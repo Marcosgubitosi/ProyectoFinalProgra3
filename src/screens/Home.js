@@ -9,22 +9,20 @@ import {
 import Posts from "../components/Posts";
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-
-    };
-  }
-
-
-
   render() {
     return (
-      <View>
-        <Posts/>
+      <View style={styles.container}>
+        <Posts />
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1, 
+    backgroundColor: "darkgray",
+  },
+});
 
 export default Home;

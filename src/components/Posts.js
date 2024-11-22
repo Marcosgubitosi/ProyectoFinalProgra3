@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList } from "react-native
 import {db, auth} from '../firebase/Config'
 import firebase from "firebase";
 
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 class Posts extends Component {
   constructor(props) {
@@ -15,7 +16,7 @@ class Posts extends Component {
   }
 
   componentDidMount(){
-    db.collection('posts').onSnapshot(
+    db.collection('posts').orderBy('createdAt', 'desc').onSnapshot(
         docs =>{
                 let posts = [];
            docs.forEach( doc => {
@@ -47,35 +48,45 @@ handleLike(index){
     }
 }
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <FlatList
-        data={ this.state.posts }
-        keyExtractor={ item => item.id.toString() }
-        renderItem={ ({item, index}) => 
-        <View style={styles.postContainer}> 
-          <Text>{item.data.email}: {item.data.message} </Text>
-          <Text>Likes: {item.data.likes.length}</Text>
-          <TouchableOpacity onPress={() => this.handleLike(index)}> <Text style={styles.likeButtonText}>{item.data.likes.includes(auth.currentUser.email) ? "Quitar Like" : "Like"}</Text></TouchableOpacity>
-        </View> 
-        }
-        />        
-      </View>
-    );
-  }
+render() {
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={this.state.posts}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item, index }) => (
+          <View style={styles.postContainer}>
+            <Text>{`${item.data.email}: ${item.data.message}`}</Text>
+            <Text>{`Likes: ${item.data.likes.length}`}</Text>
+            <TouchableOpacity onPress={() => this.handleLike(index)}>
+              <Text style={styles.likeButtonText}>
+                {item.data.likes.includes(auth.currentUser.email)
+                  ? (<AntDesign name='heart' size = {24} color="#44aa26" />)
+                  : (<AntDesign name='hearto' size = {24} color="#44aa26" />)}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      />
+    </View>
+  );
+}
+
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
+    backgroundColor: "darkgray", 
   },
   postContainer: {
     marginBottom: 15,
     padding: 15,
     backgroundColor: '#f9f9f9',
     borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#44aa26", 
   },
   likeButtonText: {
     color: '#007bff',

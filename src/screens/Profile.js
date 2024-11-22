@@ -8,46 +8,50 @@ import {
 } from "react-native";
 
 import firebase from "firebase";
+import AntDesign from '@expo/vector-icons/AntDesign';
+
 
 import { auth, db } from "../firebase/Config";
 
 class Profile extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       usuarios: [],
       posteos: [],
       loading: true
 
     };
   }
-  componentDidMount() {    
+  componentDidMount() {
     db.collection('users').onSnapshot(
-        docs =>{
-                let posts = [];
-           docs.forEach( doc => {
-                posts.push({
-                    id: doc.id,
-                    data: doc.data()
+      docs => {
+        let posts = [];
+        docs.forEach(doc => {
+          posts.push({
+            id: doc.id,
+            data: doc.data()
+          })
+          this.setState({
+            usuarios: posts,
+            loading: false
+          })
         })
-               this.setState({
-                usuarios: posts,
-                loading: false
-           })
-        })})
-    db.collection('posts').onSnapshot(
-        docs =>{
-                let posts = [];
-           docs.forEach( doc => {
-                posts.push({
-                    id: doc.id,
-                    data: doc.data()
+      })
+    db.collection('posts').orderBy('createdAt', 'desc').onSnapshot(
+      docs => {
+        let posts = [];
+        docs.forEach(doc => {
+          posts.push({
+            id: doc.id,
+            data: doc.data()
+          })
+          this.setState({
+            posteos: posts,
+            loading: false
+          })
         })
-               this.setState({
-                posteos: posts,
-                loading: false
-           })
-        })})
+      })
   }
   logout() {
     auth
@@ -58,7 +62,7 @@ class Profile extends Component {
       .catch((error) => console.log(error));
   }
   handleDelete(id, data) {
-      db.collection('posts').doc(id).delete()
+    db.collection('posts').doc(id).delete()
       .then(() => {
         console.log('Documento eliminado correctamente');
       })
@@ -75,32 +79,33 @@ class Profile extends Component {
     const uEmail = auth.currentUser.email
     const cantidadPosteos = this.state.posteos.filter(
       posteo => posteo.data.email === uEmail).length;
-    
+
     return (
-      <View>
-        <Text> Mi perfil </Text>
-        <FlatList
-          data={this.state.usuarios}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({ item }) => item.data.email === auth.currentUser.email ? <Text>nombre:{item.data.usuario}</Text> : null }
-        />
-        <Text>Email: {auth.currentUser.email}</Text>
-        <Text>Cantidad de posteos: {cantidadPosteos}</Text>
+      <View style={styles.container}>
+        <Text style={styles.headerText}>Mi perfil</Text>
+        <View style={styles.profileInfo}>
+          <Text style={styles.profileText}>Email: {auth.currentUser.email}</Text>
+          <Text style={styles.profileText}>
+            Cantidad de posteos: {cantidadPosteos}
+          </Text>
+        </View>
         <FlatList
           data={this.state.posteos}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({ item }) => 
-          item.data.email === auth.currentUser.email ? 
-          <View>
-          <Text>Posteo: {item.data.message}</Text>
-          <TouchableOpacity
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) =>
+            item.data.email === auth.currentUser.email ? (
+              <View style={styles.postContainer}>
+                <Text style={styles.postText}>Posteo: {item.data.message}</Text>
+                <TouchableOpacity
                   style={styles.deleteButton}
                   onPress={() => this.handleDelete(item.id, item.data)}
                 >
                   <Text style={styles.deleteText}>Eliminar</Text>
-            </TouchableOpacity>
-          </View>
-          : null }
+                  <AntDesign name='delete' size = {20} color="black" />
+                </TouchableOpacity>
+              </View>
+            ) : null
+          }
         />
         <TouchableOpacity
           style={styles.logoutButton}
@@ -114,21 +119,68 @@ class Profile extends Component {
 }
 
 const styles = StyleSheet.create({
-  logoutButton: {
-    backgroundColor: "#ff4444",
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: "darkgray",
   },
-  logoutText: {
+  headerText: {
+    fontSize: 30,
+    fontWeight: "700",
+    marginBottom: 20,
     color: "white",
-    textAlign: "center",
+    alignSelf: "center"
+  },
+  profileInfo: {
+    borderWidth: 4,
+    borderColor: "#44aa26",
+    marginBottom: 20,
+    padding: 15,
+    backgroundColor: "#ffffff",
+    borderRadius: 8,
+    
+  },
+  profileText: {
+    fontSize: 16,
+    marginBottom: 10,
+    color: "#555",
+  },
+  postContainer: {
+    flexDirection: "row", 
+    justifyContent: "space-between", 
+    alignItems: "center", 
+    marginBottom: 15,
+    padding: 10,
+    backgroundColor: "#ffffff",
+    borderRadius: 8,
+  },
+  postText: {
+    fontSize: 18,
+    color: "#333",
+    // alignSelf: "flex-start"
   },
   deleteButton: {
-    backgroundColor: "#ff0000",
-    padding: 5,
+    backgroundColor: "#ff4444", 
+    padding: 10,
     borderRadius: 5,
-    marginTop: 5,
+    alignItems: "center",
+  },
+  deleteText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 14,
+  },
+  logoutButton: {
+    backgroundColor: "#ff9e00",
+    padding: 15,
+    borderRadius: 8,
+    marginTop: 20,
+    alignItems: "center",
+  },
+  logoutText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
 
