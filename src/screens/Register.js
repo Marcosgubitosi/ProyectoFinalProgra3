@@ -36,19 +36,19 @@ class Register extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.heading}>Registro</Text>
-        <TextInput
+        <TextInput style= {styles.input}
           keyboardType="default"
           placeholder="Ingrese su usuario"
           onChangeText={(text) => this.setState({ userName: text })}
           value={this.state.userName}
         />
-        <TextInput
+        <TextInput style= {styles.input}
           keyboardType="email-address"
           placeholder="Ingrese su email"
           onChangeText={(text) => this.setState({ email: text })}
           value={this.state.email}
         />
-        <TextInput
+        <TextInput style= {styles.input}
           placeholder="Ingrese su contraseña"
           secureTextEntry={true}
           onChangeText={(text) => this.setState({ password: text })}
@@ -60,7 +60,7 @@ class Register extends Component {
         >
         <Text>Acceder</Text>
         </TouchableOpacity>
-        <Text>Navegación cruzada a Login: </Text>
+        {/* <Text>Navegación cruzada a Login: </Text> */}
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate("Login")}
           style={styles.button}
@@ -74,23 +74,38 @@ class Register extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 20,
+    flex: 1, 
+    justifyContent: "center", 
+    alignItems: "center",
+    backgroundColor: "darkgray", 
+  },
+  input: {
+    width: "50%", 
+    height: 45,
+    marginBottom: 15,
+    fontSize: 16,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: "#44aa26",
+    paddingHorizontal: 15,
+    backgroundColor: "white", 
   },
   heading: {
     fontSize: 30,
-    fontWeight: 700,
-    marginBottom: 10,
+    fontWeight: "700",
+    marginBottom: 20,
+    color: "white",
   },
   button: {
-    backgroundColor: "#51b9e9",
+    backgroundColor: "#ff9e00",
     borderRadius: 5,
     padding: 10,
-    width: "100%",
+    width: "50%", 
     alignItems: "center",
     marginTop: 10,
   },
   buttonSecondary: {
-    backgroundColor: "#ffa500",
+    backgroundColor: "#44aa26",
   },
 });
 

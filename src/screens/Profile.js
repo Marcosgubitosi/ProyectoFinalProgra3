@@ -7,6 +7,8 @@ import {
   FlatList,
 } from "react-native";
 
+import firebase from "firebase";
+
 import { auth, db } from "../firebase/Config";
 
 class Profile extends Component {
@@ -19,7 +21,7 @@ class Profile extends Component {
 
     };
   }
-  componentDidMount() {
+  componentDidMount() {    
     db.collection('users').onSnapshot(
         docs =>{
                 let posts = [];
@@ -55,10 +57,21 @@ class Profile extends Component {
       })
       .catch((error) => console.log(error));
   }
+  handleDelete(id, data) {
+      db.collection('posts').doc(id).delete()
+      .then(() => {
+        console.log('Documento eliminado correctamente');
+      })
+      .catch((error) => {
+        console.error('Error al eliminar el documento:', error);
+      });
+  }
 
 
 
   render() {
+    // console.log(this.state.posteos);
+
     const uEmail = auth.currentUser.email
     const cantidadPosteos = this.state.posteos.filter(
       posteo => posteo.data.email === uEmail).length;
@@ -77,7 +90,17 @@ class Profile extends Component {
           data={this.state.posteos}
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => 
-          item.data.email === auth.currentUser.email ? <Text>Posteo: {item.data.message}</Text>  : null }
+          item.data.email === auth.currentUser.email ? 
+          <View>
+          <Text>Posteo: {item.data.message}</Text>
+          <TouchableOpacity
+                  style={styles.deleteButton}
+                  onPress={() => this.handleDelete(item.id, item.data)}
+                >
+                  <Text style={styles.deleteText}>Eliminar</Text>
+            </TouchableOpacity>
+          </View>
+          : null }
         />
         <TouchableOpacity
           style={styles.logoutButton}
@@ -100,6 +123,12 @@ const styles = StyleSheet.create({
   logoutText: {
     color: "white",
     textAlign: "center",
+  },
+  deleteButton: {
+    backgroundColor: "#ff0000",
+    padding: 5,
+    borderRadius: 5,
+    marginTop: 5,
   },
 });
 

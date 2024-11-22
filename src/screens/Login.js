@@ -36,13 +36,13 @@ class Login extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.heading}>Ingresar</Text>
-        <TextInput
+        <TextInput style= {styles.input}
           keyboardType="email-address"
           placeholder="Ingrese su email"
           onChangeText={(text) => this.setState({ email: text })}
           value={this.state.email}
         />
-        <TextInput
+        <TextInput style= {styles.input}
           placeholder="Ingrese su contrasena"
           secureTextEntry={true}
           onChangeText={(text) => this.setState({ password: text })}
@@ -51,7 +51,7 @@ class Login extends Component {
         <TouchableOpacity onPress={() => this.handleSubmit() }  style={[styles.button, styles.buttonSecondary]}>
           <Text>Acceder</Text>
         </TouchableOpacity>
-        <Text>Navegación cruzada a Register: </Text>
+        {/* <Text>Navegación cruzada a Register: </Text> */}
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate("Register")}
           style={styles.button}
@@ -65,23 +65,38 @@ class Login extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 20,
+    flex: 1, 
+    justifyContent: "center", 
+    alignItems: "center",
+    backgroundColor: "darkgray", 
+  },
+  input: {
+    width: "50%", 
+    height: 45,
+    marginBottom: 15,
+    fontSize: 16,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: "#44aa26",
+    paddingHorizontal: 15,
+    backgroundColor: "white", 
   },
   heading: {
     fontSize: 30,
-    fontWeight: 700,
-    marginBottom: 10,
+    fontWeight: "700",
+    marginBottom: 20,
+    color: "white",
   },
   button: {
-    backgroundColor: "#51b9e9",
+    backgroundColor: "#ff9e00",
     borderRadius: 5,
     padding: 10,
-    width: "100%",
+    width: "50%", 
     alignItems: "center",
     marginTop: 10,
   },
   buttonSecondary: {
-    backgroundColor: "#ffa500",
+    backgroundColor: "#44aa26",
   },
 });
 
