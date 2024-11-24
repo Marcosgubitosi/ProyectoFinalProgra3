@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from "react-native";
 import { auth, db } from "../firebase/Config";
 
@@ -17,6 +18,7 @@ class Register extends Component {
       userName: "",
       registered: false,
       error: "",
+      loading: false
     };
   }
 
@@ -26,19 +28,30 @@ componentDidMount(){
 
 
 handleSubmit() {
+  this.setState({ loading: true})
     auth
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(db.collection('users').add({
+      .then(() => {
+        return db.collection('users').add({
         email: this.state.email,
         usuario: this.state.userName,
         createdAt: Date.now(),
-    }))
-      .then(() => this.props.navigation.navigate("Login"))
+      
+    })
+  }) 
+      .then(() => { 
+      this.setState({ loading: false });
+      this.props.navigation.navigate("Login")
+    })
       .catch((error) => console.log(error));
   }
 
   render() {
+
     return (
+      <View style={styles.cont}>
+      {this.state.loading ? (<ActivityIndicator size='large' color='green' />
+      ): (
       <View style={styles.container}>
         <Text style={styles.heading}>Registro</Text>
         <TextInput style= {styles.input}
@@ -73,12 +86,17 @@ handleSubmit() {
         >
         <Text>Ya tengo cuenta</Text>
         </TouchableOpacity>
-      </View>
+      </View>)}
+    </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  cont: {
+    flex: 1,
+    backgroundColor: "darkgray"
+  },
   container: {
     flex: 1, 
     justifyContent: "center", 

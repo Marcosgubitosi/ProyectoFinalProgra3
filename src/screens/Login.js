@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   TextInput,
+  ActivityIndicator
 } from "react-native";
 import {auth} from '../firebase/Config'
 
@@ -33,7 +34,12 @@ class Login extends Component {
   }
 
   render() {
+    
     return (
+
+      <View style={styles.cont}>
+      {this.state.logued ? (<ActivityIndicator size='large' color='green' />
+      ): (
       <View style={styles.container}>
         <Text style={styles.heading}>Ingresar</Text>
         <TextInput style= {styles.input}
@@ -61,11 +67,16 @@ class Login extends Component {
           <Text>No tengo cuenta</Text>
         </TouchableOpacity>     
       </View>
-    );
+    ) }
+    </View>
+    )}
   }
-}
 
 const styles = StyleSheet.create({
+  cont: {
+    flex: 1,
+    backgroundColor: 'darkgray'
+  },
   container: {
     flex: 1, 
     justifyContent: "center", 

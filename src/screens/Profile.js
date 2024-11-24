@@ -19,8 +19,6 @@ class Profile extends Component {
     this.state = {
       usuarios: [],
       posteos: [],
-      loading: true
-
     };
   }
   componentDidMount() {
@@ -34,7 +32,6 @@ class Profile extends Component {
           })
           this.setState({
             usuarios: usuarios,
-            loading: false
           })
         })
       })
@@ -45,12 +42,10 @@ class Profile extends Component {
           posts.push({
             id: doc.id,
             data: doc.data()
-          })
+          })})
           this.setState({
             posteos: posts,
-            loading: false
           })
-        })
       })
   }
   logout() {
@@ -75,7 +70,7 @@ class Profile extends Component {
 
   render() {
     
-    console.log(this.state.usuarios);
+    // console.log(this.state.usuarios);
     
     const uEmail = auth.currentUser.email
     const cantidadPosteos = this.state.posteos.filter(
