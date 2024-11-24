@@ -23,7 +23,6 @@ class Search extends Component {
 handleSubmit() {
     console.log(this.state.message);
     db.collection('users')
-        .where('email', '==', this.state.message) 
         .onSnapshot(docs => {
             let usuarios = [];
             docs.forEach(doc => {
@@ -44,6 +43,10 @@ handleSubmit() {
 }
 
   render() {
+    const usuariosFiltrados = this.state.usuarios.filter((usuario) =>
+      usuario.data.email.toLowerCase().includes(this.state.message.toLowerCase())
+    );
+    // {console.log(usuariosFiltrados)}    
     return (
       <View style={styles.container}>
         <Text style={styles.heading}>Search</Text>
@@ -60,9 +63,9 @@ handleSubmit() {
           <Text style = {styles.submitText}>Search</Text>
         </TouchableOpacity>
 
-        {this.state.usuarios.length > 0 ? (
+        {usuariosFiltrados.length > 0 ? (
             <FlatList
-                data={this.state.usuarios}
+                data={usuariosFiltrados}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
                     <View style={styles.searchContainer}>
