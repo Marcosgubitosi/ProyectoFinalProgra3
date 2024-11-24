@@ -20,7 +20,12 @@ class Register extends Component {
     };
   }
 
-  handleSubmit() {
+componentDidMount(){
+  auth.onAuthStateChanged(user =>  JSON.stringify(user,null,4) != 'null' ? this.props.navigation.navigate("HomeMenu") : (console.log("tamos nulos")))
+}
+
+
+handleSubmit() {
     auth
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(db.collection('users').add({
@@ -29,7 +34,7 @@ class Register extends Component {
         createdAt: Date.now(),
     }))
       .then(() => this.props.navigation.navigate("Login"))
-      .catch((error) => this.setState({ error: "Fallo el registro" }));
+      .catch((error) => console.log(error));
   }
 
   render() {

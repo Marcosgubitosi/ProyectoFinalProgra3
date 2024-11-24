@@ -29,7 +29,7 @@ class Login extends Component {
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then((response) => this.setState({ logued: true }))
       .then( ()=>  this.props.navigation.navigate("HomeMenu"))
-      .catch((error) => this.setState({ error: "Fallo el login" }));    
+      .catch((error) => this.setState({ error: "El email o contraseña son incorrectos" }));    
   }
 
   render() {
@@ -48,6 +48,8 @@ class Login extends Component {
           onChangeText={(text) => this.setState({ password: text })}
           value={this.state.password}
         />
+        {this.state.error != '' ?  <Text> {this.state.error} </Text>: <Text> </Text>}
+        
         <TouchableOpacity onPress={() => this.handleSubmit() }  style={[styles.button, styles.buttonSecondary]}>
           <Text>Acceder</Text>
         </TouchableOpacity>

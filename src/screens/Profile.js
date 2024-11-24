@@ -26,14 +26,14 @@ class Profile extends Component {
   componentDidMount() {
     db.collection('users').onSnapshot(
       docs => {
-        let posts = [];
+        let usuarios = [];
         docs.forEach(doc => {
-          posts.push({
+          usuarios.push({
             id: doc.id,
             data: doc.data()
           })
           this.setState({
-            usuarios: posts,
+            usuarios: usuarios,
             loading: false
           })
         })
@@ -74,20 +74,26 @@ class Profile extends Component {
 
 
   render() {
-    // console.log(this.state.posteos);
-
+    
+    console.log(this.state.usuarios);
+    
     const uEmail = auth.currentUser.email
     const cantidadPosteos = this.state.posteos.filter(
       posteo => posteo.data.email === uEmail).length;
+      
 
     return (
       <View style={styles.container}>
         <Text style={styles.headerText}>Mi perfil</Text>
         <View style={styles.profileInfo}>
-          <Text style={styles.profileText}>Email: {auth.currentUser.email}</Text>
-          <Text style={styles.profileText}>
-            Cantidad de posteos: {cantidadPosteos}
-          </Text>
+
+          <FlatList
+          data={this.state.usuarios}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => item.data.email === auth.currentUser.email ? ( <Text style={styles.profileText}>Nombre: {item.data.usuario} </Text> ) : null}
+        />
+        <Text style={styles.profileText}>Email: {auth.currentUser.email}</Text>
+        <Text style={styles.profileText}>Cantidad de posteos: {cantidadPosteos}</Text>
         </View>
         <FlatList
           data={this.state.posteos}
