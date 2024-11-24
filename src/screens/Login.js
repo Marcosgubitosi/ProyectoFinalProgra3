@@ -19,9 +19,9 @@ class Login extends Component {
     };
   }
 
-  componentDidMount(){
-    auth.onAuthStateChanged(user => console.log('El usuario es:', JSON.stringify(user,null,4)))
-  }
+  // componentDidMount(){
+  //   auth.onAuthStateChanged(user => console.log('El usuario es:', JSON.stringify(user,null,4)))
+  // }
 
   handleSubmit() {
     

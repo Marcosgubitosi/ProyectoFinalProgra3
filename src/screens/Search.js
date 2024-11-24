@@ -20,7 +20,7 @@ class Search extends Component {
     };
   }
 
-handleSubmit() {
+componentDidMount() {
     console.log(this.state.message);
     db.collection('users')
         .onSnapshot(docs => {
@@ -57,28 +57,36 @@ handleSubmit() {
           value={this.state.message}
         />
         <TouchableOpacity
-          onPress={() => this.handleSubmit()}
+          // onPress={() => this.handleSubmit()}
           style={[styles.button, styles.buttonSecondary]}
         >
           <Text style = {styles.submitText}>Search</Text>
         </TouchableOpacity>
 
-        {usuariosFiltrados.length > 0 ? (
-            <FlatList
-                data={usuariosFiltrados}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
-                    <View style={styles.searchContainer}>
-                        <Text style={styles.searchText}>Email: {item.data.email}</Text>
-                        <Text style={styles.searchText}>Usuario: {item.data.usuario}</Text>
-                    </View>
-                )}
-            />
+        <View style={styles.listContainer}>
+        {usuariosFiltrados.length > 0 ? ( 
+          (this.state.message == '' ? 
+            <View style={styles.escribaContainer}>
+              <Text style={styles.searchText}>Escriba algo por favor</Text>
+            </View> 
+          : 
+          (<FlatList
+            data={usuariosFiltrados}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <View style={styles.searchContainer}>
+                <Text style={styles.searchText}>Email: {item.data.email}</Text>
+                <Text style={styles.searchText}>Usuario: {item.data.usuario}</Text>
+              </View>
+          )}
+          />) 
+        )
         ) : (
             <View style={styles.neContainer}>
-                <Text style={styles.neText}>No se encontraron usuarios con ese email</Text>
+              <Text style={styles.neText}>No se encontraron usuarios con ese email</Text>
             </View>
-        )}
+  )}
+  </View>
       </View>
       
     );
@@ -89,7 +97,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1, 
     padding: 20,
-    justifyContent: "center", 
+    justifyContent: "flex-start", 
     alignItems: "center",
     backgroundColor: "darkgray", 
   },
@@ -105,7 +113,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white", 
   },
   heading: {
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: "700",
     marginBottom: 20,
     color: "white",
@@ -145,6 +153,8 @@ const styles = StyleSheet.create({
   neContainer: {
     borderWidth: 4,
     borderColor: "red",
+    flexDirection: "column", 
+    alignItems: "flex-start", 
     marginBottom: 15,
     marginTop: 30,
     padding: 10,
@@ -154,6 +164,21 @@ const styles = StyleSheet.create({
   neText: {
     fontSize: 18,
     color: "red",
+  },
+  escribaContainer: {
+    borderWidth: 4,
+    borderColor: "#ff9e00",
+    flexDirection: "column", 
+    alignItems: "flex-start", 
+    marginBottom: 15,
+    marginTop: 30,
+    padding: 10,
+    backgroundColor: "#ffffff",
+    borderRadius: 8,
+  },
+  listContainer: {
+    flex: 1, 
+    width: "50%",
   },
 });
 
