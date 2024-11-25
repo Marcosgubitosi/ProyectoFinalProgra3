@@ -72,10 +72,13 @@ class Profile extends Component {
     
     // console.log(this.state.usuarios);
     
+    
     const uEmail = auth.currentUser.email
     const cantidadPosteos = this.state.posteos.filter(
       posteo => posteo.data.email === uEmail).length;
-      
+
+    const filteredUsers = this.state.usuarios.filter(user => user.data.email === uEmail);
+    
 
     return (
       <View style={styles.container}>
@@ -83,9 +86,10 @@ class Profile extends Component {
         <View style={styles.profileInfo}>
 
           <FlatList
-          data={this.state.usuarios}
+          data={filteredUsers}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => item.data.email === auth.currentUser.email ? ( <Text style={styles.profileText}>Nombre: {item.data.usuario} </Text> ) : null}
+          renderItem={({ item }) => <Text style={styles.profileText}>Nombre: {item.data.usuario} </Text> 
+          }
         />
         <Text style={styles.profileText}>Email: {auth.currentUser.email}</Text>
         <Text style={styles.profileText}>Cantidad de posteos: {cantidadPosteos}</Text>
