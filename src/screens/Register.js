@@ -28,7 +28,7 @@ componentDidMount(){
 
 
 handleSubmit() {
-  this.setState({ loading: true})
+  this.setState({ loading: true, error:""})
     auth
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
@@ -43,7 +43,9 @@ handleSubmit() {
       this.setState({ loading: false });
       this.props.navigation.navigate("Login")
     })
-      .catch((error) => console.log(error));
+    .catch((error) => {
+      this.setState({ error: error.message, loading: false})
+    })
   }
 
   render() {
@@ -72,6 +74,7 @@ handleSubmit() {
           onChangeText={(text) => this.setState({ password: text })}
           value={this.state.password}
         />
+        {this.state.error !== "" ? (<Text style={styles.errorText}>{this.state.error}</Text>) : null}
         {this.state.email !== "" && this.state.password !== "" && this.state.userName !== "" ? (
         <TouchableOpacity
           onPress={() => this.handleSubmit()}
